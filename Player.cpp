@@ -4,6 +4,7 @@
 #include <ctime>    // For time()
 #include <vector>
 #include <string>
+#include "Player.h"
 
 int roll (std::mt19937& gen, std::uniform_int_distribution<>& distribution) {
     int die_roll = distribution(gen);
@@ -17,22 +18,7 @@ void printVector(const std::vector<int> & vec) {
     }
 }
 
-class Player {
-    public:
-    std::string name;
-    int num_dice;
-    std::vector<int> dice;
-    Player(std::string x, int y);
-    void rollDice();
-    void loseDice();
-    void lookAtDice();
-
-};
-
-Player::Player(std::string x, int y = 5) {
-    name = x;
-    num_dice = y;
-}
+Player::Player(std::string name, int num_dice) : name(name), num_dice(num_dice) {};
 
 void Player::rollDice() {
     std::vector<int> dice_rolls = {};
@@ -54,7 +40,12 @@ void Player::lookAtDice() {
     printVector(this->dice);
 };
 
-int main() {
-    Player Sol("Sol");
-    std::cout << Sol.name;
-}
+void Player::makeBet() {
+    int guess;
+    std::cout << "Guess the number of dice: " << std::endl;
+    std::cin >> guess;
+};
+
+void Player::callDudo() {
+    std::cout << "Dudo!" << std::endl;
+};
