@@ -6,9 +6,18 @@
 #include <string>
 #include "Player.h"
 
+Player::Player() {
+    this->name = "";
+    this->num_dice = 0;
+}
+
+Player::Player(std::string name, int num_dice) {
+    this->name = name;
+    this->num_dice = num_dice;
+};
+
 int roll (std::mt19937& gen, std::uniform_int_distribution<>& distribution) {
     int die_roll = distribution(gen);
-    std::cout << "You rolled a: " << die_roll << std::endl;
     return die_roll;
 }
 
@@ -18,10 +27,7 @@ void printVector(const std::vector<int> & vec) {
     }
 }
 
-Player::Player(std::string name, int num_dice) : name(name), num_dice(num_dice) {};
-
 void Player::rollDice() {
-    std::vector<int> dice_rolls = {};
     std::random_device rd;
     std::mt19937 gen(rd()); 
     std::uniform_int_distribution<> distribution(1,6);;
@@ -29,7 +35,9 @@ void Player::rollDice() {
     for (int i = 0; i < this->num_dice; i++) {
         int die = roll(gen, distribution);
         this->dice.push_back(die);
+        // std::cout << "Die Rolled: " << die << " | Dice: " << this->dice.size() << std::endl;
     }
+
 };
 
 void Player::loseDice() {
@@ -41,9 +49,10 @@ void Player::lookAtDice() {
 };
 
 void Player::makeBet() {
-    int guess;
     std::cout << "Guess the number of dice: " << std::endl;
-    std::cin >> guess;
+    std::cin >> this->guess_num;
+    std::cout << "Guess the value of the dice: " << std::endl;
+    std::cin >> this->guess_value;
 };
 
 void Player::callDudo() {
