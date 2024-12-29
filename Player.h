@@ -15,13 +15,14 @@ class Player {
         std::string name;
         int num_dice;
         std::vector<int> dice;
+        int num_players;
         int guess_value;
         int guess_num;
         void rollDice();
         void loseDice();
         void lookAtDice();
         virtual void makeBet();
-        void callDudo();
+        virtual bool callDudo(int* guess);
 
         Player();
 

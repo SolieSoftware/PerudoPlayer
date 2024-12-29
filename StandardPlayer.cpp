@@ -40,6 +40,14 @@ int getMode(std::vector<int>& dice) {
 
 void StandardPlayer::makeBet() {
     int mode, maxFreq = getMode(this->dice);
-    this->guess_num = maxFreq + 3;
+    this->guess_num = maxFreq + (this->num_players - 2);
     this->guess_value = mode;
+    std::cout << "I guess " << this->guess_num << " " << this->guess_value << "s. " << std::endl;
+}
+
+bool StandardPlayer::callDudo(int* guess) {
+    if (guess[0] > this->num_players) {
+        return true;
+    }
+    return false;
 }
