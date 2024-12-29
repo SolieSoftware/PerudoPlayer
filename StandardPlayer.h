@@ -14,6 +14,7 @@ class StandardPlayer: public Player {
         StandardPlayer();
         StandardPlayer(std::string name, int num_dice);
         void makeBet() override;
+        bool callDudo(int* guess) override; 
 };
 
 #endif

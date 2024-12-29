@@ -55,6 +55,13 @@ void Player::makeBet() {
     std::cin >> this->guess_value;
 };
 
-void Player::callDudo() {
-    std::cout << "Dudo!" << std::endl;
+bool Player::callDudo(int* guess) {
+    std::cout << "The last player just guessed " << guess[0] << " " << guess[1] << "s." << std::endl;
+    char rep;
+    std::cout << "Would you like to call Dudo, press Y" << std::endl;
+    std::cin >> rep;
+    if (rep == 'Y') {
+        return true;
+    };
+    return false;
 };
