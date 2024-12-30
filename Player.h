@@ -7,6 +7,7 @@
 #include <ctime>    // For time()
 #include <vector>
 #include <string>
+#include "GlobalGame.h"
 
 
 
