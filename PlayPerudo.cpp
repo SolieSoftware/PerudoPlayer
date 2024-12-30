@@ -8,6 +8,7 @@
 #include <map>
 #include "Player.h"
 #include "StandardPlayer.h"
+#include "GlobalGame.h"
 
 void StartGame(std::unordered_map <std::string, Player>& players) {
     for (auto &player: players) {
@@ -15,19 +16,43 @@ void StartGame(std::unordered_map <std::string, Player>& players) {
     };
 }
 
-
 std::vector<std::string> SetOrder() {
     std::vector<std::string> order_of_players = {"Tom", "Henry", "Steven", "Harold", "main"};
     return order_of_players;
 }
 
 std::vector<std::string> ShuffleOrder(std::vector<std::string> order_of_players) {
-    order_of_players.push_back(order_of_players[0]);
-    order_of_players.erase(order_of_players.begin());
     return order_of_players;
 }
 
+void InitialiseGameSetup() {
+    int num_players;
+    int num_dice;
+    std::cout << "How many Players in this game?" << std::endl;
+    std::cin >> num_players;
+    std::cout << "How many dice per players?" << std::endl;
+    std::cin >> num_dice;
+
+    if (num_dice > 3 && num_dice <= 6 && num_players >=3 && num_players <= 10) {
+        //Use Standard setup for now
+        GlobalGame();
+    } else {
+        GlobalGame();
+    }
+
+    GlobalGame obj;
+    std::cout << obj.num_players;
+}
+
 int main() {
+    // Initialise Game Setup
+    InitialiseGameSetup();
+
+    return 0;
+
+
+
+
     std::string name;
     std::cout << "State your name cus!" << std::endl;
     std::cin >> name;
