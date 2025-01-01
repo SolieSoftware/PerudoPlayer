@@ -50,9 +50,9 @@ void Player::lookAtDice() {
 
 void Player::makeBet() {
     std::cout << "Guess the number of dice: " << std::endl;
-    std::cin >> this->guess_num;
+    std::cin >> this->guess[0];
     std::cout << "Guess the value of the dice: " << std::endl;
-    std::cin >> this->guess_value;
+    std::cin >> this->guess[1];
 };
 
 bool Player::callDudo(int* guess) {
