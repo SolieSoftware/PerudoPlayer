@@ -17,8 +17,7 @@ class Player {
         int num_dice;
         std::vector<int> dice;
         int num_players;
-        int guess_value;
-        int guess_num;
+        int guess[2];
         void rollDice();
         void loseDice();
         void lookAtDice();
