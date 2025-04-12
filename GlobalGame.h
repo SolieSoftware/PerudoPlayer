@@ -15,7 +15,7 @@ class GlobalGame {
         std::vector<std::string> static playing_order;
         bool static dudo_called;
         bool static win_round;
-        bool static win_game;5
+        bool static win_game;
 
         GlobalGame();
 

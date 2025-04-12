@@ -11,7 +11,7 @@ StandardPlayer::StandardPlayer() : Player() {}
 
 StandardPlayer::StandardPlayer(std::string name, int num_dice) : Player(name, num_dice) {}
 
-int getMode(std::vector<int>& dice) {
+std::pair<int, int> getMode(std::vector<int>& dice) {
     std::unordered_map<int, int> freq = {
         {1, 0},
         {2, 0},
@@ -34,15 +34,20 @@ int getMode(std::vector<int>& dice) {
             mode = entry.first;
         }
     }
-    return mode, maxNum;
+    return { mode, maxNum };
 
 }
 
 void StandardPlayer::makeBet() {
-    int mode, maxFreq = getMode(this->dice);
+    std::pair<int, int> result = getMode(this->dice);
+    int mode = result.first;
+    int maxFreq = result.second;
+    std::cout << "Mode: " << mode << std::endl;
+    std::cout << "Max Freq: " << maxFreq << std::endl;
+    std::cout << this->num_players << std::endl;
     this->guess[0] = maxFreq + (this->num_players - 2);
     this->guess[1] = mode;
-    std::cout << "I guess " << this->guess[0] << " " << this->guess[1] << "s. " << std::endl;
+    std::cout << this->name << " guesses " << this->guess[0] << " " << this->guess[1] << "s. " << std::endl;
 }
 
 bool StandardPlayer::callDudo(int* guess) {
