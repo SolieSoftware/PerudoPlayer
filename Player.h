@@ -11,12 +11,11 @@
 
 
 
-class Player {
+class Player: public GlobalGame {
     public:
         std::string name;
         int num_dice;
         std::vector<int> dice;
-        int num_players;
         int guess[2];
         void rollDice();
         void loseDice();

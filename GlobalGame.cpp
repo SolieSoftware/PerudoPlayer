@@ -30,11 +30,6 @@ GlobalGame::GlobalGame(int num_players, int init_num_dice) {
     GlobalGame::init_num_dice = init_num_dice;
 }
 
-void GlobalGame::ShuffleOrder() {
-    GlobalGame::playing_order.push_back(playing_order[0]);
-    GlobalGame::playing_order.erase(playing_order.begin());
-}
-
 void GlobalGame::CheckRoundWin(std::vector<int> dice) {
     std::unordered_map<int, int> dice_freq;
     for (int die: dice) {
