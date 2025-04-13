@@ -12,13 +12,21 @@
 #include "StandardPlayer.h"
 #include "GlobalGame.h"
 
-void PrintVector(std::vector<int>& vec) {
+// Function to print integer vectors
+void PrintIntVector(std::vector<int>& vec) {
     for (auto l : vec) {
         std::cout << l << std::endl;
     }
 }
 
-void StartRound(std::map<std::string, std::shared_ptr<Player>>players) {
+// Function to print string vectors
+void PrintStringVector(std::vector<std::string>& vec) {
+    for (auto l : vec) {
+        std::cout << l << std::endl;
+    }
+}
+
+void StartRound(std::map<std::string, std::shared_ptr<Player>>& players, GlobalGame& game) {
     std::cout << "Start Round. " << std::endl;
     std::cout << "Roll Your Dice!" << std::endl;
 
@@ -29,6 +37,9 @@ void StartRound(std::map<std::string, std::shared_ptr<Player>>players) {
     std::cout << "You rolled: ";
     players["main"]->lookAtDice();
     std::cout << std::endl;
+
+    game.last_guess[0] = 0;
+    game.last_guess[1] = 0;
 }
 
 std::vector<int> RevealDice(std::map<std::string, std::shared_ptr<Player>> players) {
@@ -45,12 +56,12 @@ std::vector<int> RevealDice(std::map<std::string, std::shared_ptr<Player>> playe
     return all_dice;
 }
 
-void RemoveZeroDicePlayers(std::map<std::string, std::shared_ptr<Player>> players, GlobalGame game) {
+void RemoveZeroDicePlayers(std::map<std::string, std::shared_ptr<Player>>& players, GlobalGame& game) {
     for (auto &player : players) {
         if (player.second->num_dice == 0) {
             std::cout << player.second->name << " has no more dice left and will now leave the game. " << std::endl;
             game.playing_order.erase(std::remove(game.playing_order.begin(), game.playing_order.end(), player.second->name), game.playing_order.end());
-            printVector(game.playing_order);
+            PrintStringVector(game.playing_order);
         }
     }
 }
@@ -103,7 +114,7 @@ int main() {
     while(!game.win_game) {
         //Start Game - Begine with roll of dice
         if (game.win_round) {
-            StartRound(players);
+            StartRound(players, game);
             game.win_round = false;
         }
 
@@ -118,6 +129,7 @@ int main() {
 
         game.dudo_called = players[game.playing_order[game.dudo_ptr]]->callDudo(game.last_guess);
         if (game.dudo_called) {
+            std::cout << players[game.playing_order[game.dudo_ptr]]->name << " has called Dudo! " << std::endl;
             game.CheckRoundWin(RevealDice(players));
             if (game.win_round) {
                 std::cout << players[game.playing_order[game.dudo_ptr]]->name << " has won the round!" << std::endl;
@@ -131,6 +143,8 @@ int main() {
         }
 
         RemoveZeroDicePlayers(players, game);
+
+        game.CountAllDice(players);
 
         game.CheckGameWin();
 
