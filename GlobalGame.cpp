@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <cstdlib>  // For rand() and srand()
 #include <random>
@@ -9,9 +8,11 @@
 #include <unordered_map>
 #include <algorithm>
 #include "GlobalGame.h"
+#include "Player.h"  // Include Player.h to resolve the incomplete type error
 
 int GlobalGame::num_players;
 int GlobalGame::init_num_dice;
+int GlobalGame::num_all_dice;
 std::vector<std::string> GlobalGame::playing_order;
 int GlobalGame::last_guess[2];
 bool GlobalGame::win_round;
@@ -25,11 +26,13 @@ GlobalGame::GlobalGame() {
     GlobalGame::num_players = 5;
     GlobalGame::init_num_dice = 5;
     GlobalGame::playing_order = {"Tom", "Henry", "Steven", "Harold", "main"};
+    GlobalGame::num_all_dice = this->num_players * this->init_num_dice;
 }
 
 GlobalGame::GlobalGame(int num_players, int init_num_dice) {
     GlobalGame::num_players = num_players;
     GlobalGame::init_num_dice = init_num_dice;
+    GlobalGame::num_all_dice = this->num_players * this->init_num_dice;
 }
 
 void GlobalGame::CheckRoundWin(std::vector<int> dice) {
@@ -70,6 +73,14 @@ void GlobalGame::NextRound() {
 
 void GlobalGame::RemovePlayer(std::string player_name) {
     this->playing_order.erase(std::remove(this->playing_order.begin(), this->playing_order.end(), player_name), this->playing_order.end());
+}
+
+void GlobalGame::CountAllDice(std::map<std::string, std::shared_ptr<Player>>& players) {
+    int total_dice = 0;
+    for (auto player: players) {
+        total_dice += player.second->num_dice;
+    }
+    this->num_all_dice = total_dice;
 }
 
 
