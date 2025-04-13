@@ -20,8 +20,10 @@ class Player: public GlobalGame {
         void rollDice();
         void loseDice();
         void lookAtDice();
+        int roll(std::uniform_int_distribution<>& distribution);
         virtual void makeBet();
         virtual bool callDudo(int* guess);
+        std::mt19937 gen;
 
         Player();
 
