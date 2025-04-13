@@ -21,7 +21,7 @@ std::pair<int, int> getMode(std::vector<int>& dice) {
         {6, 0}
     };
 
-    for (int die: dice) {
+    for (int die: this->dice) {
         freq[die]++;
     };
 
@@ -39,14 +39,23 @@ std::pair<int, int> getMode(std::vector<int>& dice) {
 }
 
 void StandardPlayer::makeBet() {
-    std::pair<int, int> result = getMode(this->dice);
-    int mode = result.first;
+    std::pair<int, int> result = getMode();
+    int diceValue = result.first;
     int maxFreq = result.second;
-    std::cout << "Mode: " << mode << std::endl;
-    std::cout << "Max Freq: " << maxFreq << std::endl;
-    std::cout << this->num_players << std::endl;
+    int prevGuessNumDice = this->guess[0];
+    int prevGuessDiceValue = this->guess[1];
+
+    // The guess has to either be an increase in quantitiy from the previous guess or an increase in value
+    // 
+
+    if (prevGuessNumDice >= maxFreq && prevGuessDiceValue >= diceValue) {
+        this->guess[0] = maxFreq + 1;
+    } else {
+        this->guess[0] = maxFreq + (this->num_players - 2);
+    }
+
     this->guess[0] = maxFreq + (this->num_players - 2);
-    this->guess[1] = mode;
+    this->guess[1] = diceValue;
     std::cout << this->name << " guesses " << this->guess[0] << " " << this->guess[1] << "s. " << std::endl;
 }
 

@@ -31,7 +31,7 @@ void StartRound(std::map<std::string, std::shared_ptr<Player>>players) {
     std::cout << std::endl;
 }
 
-std::vector<int> RevealDice( std::map<std::string, std::shared_ptr<Player>> players) {
+std::vector<int> RevealDice(std::map<std::string, std::shared_ptr<Player>> players) {
     std::cout << "Everyone please reveal your dice! " << std::endl;
 
     std::vector<int> all_dice;
@@ -42,17 +42,15 @@ std::vector<int> RevealDice( std::map<std::string, std::shared_ptr<Player>> play
         all_dice.insert(all_dice.end(), player.second->dice.begin(), player.second->dice.end());
     }
 
-    std::cout << "Let's look at all the dice: ";
-    PrintVector(all_dice);
-    std::cout << std::endl;
-
     return all_dice;
 }
 
 void RemoveZeroDicePlayers(std::map<std::string, std::shared_ptr<Player>> players, GlobalGame game) {
     for (auto &player : players) {
         if (player.second->num_dice == 0) {
+            std::cout << player.second->name << " has no more dice left and will now leave the game. " << std::endl;
             game.playing_order.erase(std::remove(game.playing_order.begin(), game.playing_order.end(), player.second->name), game.playing_order.end());
+            printVector(game.playing_order);
         }
     }
 }
@@ -99,29 +97,44 @@ int main() {
     players["Harold"] = std::make_shared<StandardPlayer>("Harold", 5);
 
     //Start Betting Round
-    int bet_ptr = 0;
-    int dudo_ptr = 1;
+    game.bet_ptr = 0;
+    game.dudo_ptr = 1;
+    game.win_round = true;
     while(!game.win_game) {
         //Start Game - Begine with roll of dice
-        StartRound(players);
-
-        //Player makes bet and reveals his bet to the table. 
-        std::cout << game.playing_order[bet_ptr] << " will play his turn. " << std::endl;
-        players[game.playing_order[bet_ptr]]->makeBet();
-        
-        game.last_guess[0] = players[game.playing_order[bet_ptr]]->guess[0];
-        game.last_guess[1] =  players[game.playing_order[bet_ptr]]->guess[1];
-
-
-        game.dudo_called = players[game.playing_order[dudo_ptr]]->callDudo(game.last_guess);
-        if (game.dudo_called) {
-            game.CheckRoundWin(RevealDice(players));
+        if (game.win_round) {
+            StartRound(players);
+            game.win_round = false;
         }
 
+
+        //Player makes bet and reveals his bet to the table. 
+        std::cout << game.playing_order[game.bet_ptr] << " will play his turn. " << std::endl;
+        players[game.playing_order[game.bet_ptr]]->makeBet();
         
+        game.last_guess[0] = players[game.playing_order[game.bet_ptr]]->guess[0];
+        game.last_guess[1] =  players[game.playing_order[game.bet_ptr]]->guess[1];
+
+
+        game.dudo_called = players[game.playing_order[game.dudo_ptr]]->callDudo(game.last_guess);
+        if (game.dudo_called) {
+            game.CheckRoundWin(RevealDice(players));
+            if (game.win_round) {
+                std::cout << players[game.playing_order[game.dudo_ptr]]->name << " has won the round!" << std::endl;
+                std::cout << players[game.playing_order[game.bet_ptr]]->name << " loses a die. " << std::endl;
+                players[game.playing_order[game.bet_ptr]]->loseDice();
+            } else {
+                std::cout << players[game.playing_order[game.bet_ptr]]->name << " has won the round!" << std::endl;
+                std::cout << players[game.playing_order[game.dudo_ptr]]->name << " loses a die. " << std::endl;
+                players[game.playing_order[game.dudo_ptr]]->loseDice();
+            }
+        }
+
         RemoveZeroDicePlayers(players, game);
 
         game.CheckGameWin();
+
+        game.NextRound();
     }
 
 }

@@ -17,6 +17,8 @@ int GlobalGame::last_guess[2];
 bool GlobalGame::win_round;
 bool GlobalGame::win_game;
 bool GlobalGame::dudo_called;
+int GlobalGame::bet_ptr;
+int GlobalGame::dudo_ptr;
 
 
 GlobalGame::GlobalGame() {
@@ -36,13 +38,13 @@ void GlobalGame::CheckRoundWin(std::vector<int> dice) {
         dice_freq[die] += 1;
     }
 
-    if (dice_freq[this->last_guess[1]] > this->last_guess[0]) {
+    if (dice_freq[this->last_guess[1]] < this->last_guess[0]) {
         std::cout << "Dudo was called correctly!" << std::endl;
-        std::cout << "There are " << dice_freq[this->last_guess[1]] << " " << this->last_guess[1] << "s, on the table!" << std::endl;
+        std::cout << "There are only " << dice_freq[this->last_guess[1]] << " " << this->last_guess[1] << "s, on the table!" << std::endl;
         this->win_round = true;
     } else {
         std::cout << "Dudo was called incorrectly!" << std::endl;
-        std::cout << "There are only " << dice_freq[this->last_guess[1]] << " " << this->last_guess[1] << "s, on the table." << std::endl;
+        std::cout << "There are " << dice_freq[this->last_guess[1]] << " " << this->last_guess[1] << "s, on the table." << std::endl;
         this->win_round = false;
     }
 }
@@ -53,6 +55,21 @@ void GlobalGame::CheckGameWin() {
         this->win_game = true;
         std::cout << this->playing_order[0] << " has won the game! Congratulations!" << std::endl;
     }
+}
+
+void GlobalGame::NextRound() {
+    this->bet_ptr ++;
+    this->dudo_ptr ++;
+    if (this->bet_ptr >= this->playing_order.size()) {
+        this->bet_ptr = 0;
+    }
+    if (this->dudo_ptr >= this->playing_order.size()) {
+        this->dudo_ptr = 0;
+    }
+}
+
+void GlobalGame::RemovePlayer(std::string player_name) {
+    this->playing_order.erase(std::remove(this->playing_order.begin(), this->playing_order.end(), player_name), this->playing_order.end());
 }
 
 

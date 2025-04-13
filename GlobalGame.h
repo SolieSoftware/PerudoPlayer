@@ -12,6 +12,8 @@ class GlobalGame {
         int static num_players;
         int static init_num_dice;
         int static last_guess[2];
+        int static bet_ptr;
+        int static dudo_ptr;
         std::vector<std::string> static playing_order;
         bool static dudo_called;
         bool static win_round;
@@ -26,6 +28,10 @@ class GlobalGame {
         void CheckRoundWin(std::vector<int> dice);
 
         void CheckGameWin();
+
+        void NextRound();
+
+        void RemovePlayer(std::string player_name);
 
 };
 
