@@ -38,7 +38,11 @@ GlobalGame::GlobalGame(int num_players, int init_num_dice) {
 void GlobalGame::CheckRoundWin(std::vector<int> dice) {
     std::unordered_map<int, int> dice_freq;
     for (int die: dice) {
-        dice_freq[die] += 1;
+        dice_freq[die]++;
+    }
+
+    for (int i = 1; i <= 6; i++) {
+        dice_freq[i] += dice_freq[1];
     }
 
     if (dice_freq[this->last_guess[1]] < this->last_guess[0]) {

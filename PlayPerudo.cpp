@@ -47,7 +47,7 @@ std::vector<int> RevealDice(std::map<std::string, std::shared_ptr<Player>> playe
 
     std::vector<int> all_dice;
     for (auto& player : players) {
-        std::cout << player.second->name << " has the folllowind dice: ";
+        std::cout << player.second->name << " has the folllowing dice: ";
         player.second->lookAtDice();
         std::cout << std::endl;
         all_dice.insert(all_dice.end(), player.second->dice.begin(), player.second->dice.end());
